@@ -58,7 +58,7 @@ public class CBCommandHandler implements CommandExecutor
            
             if (args[0].equalsIgnoreCase("help")) // argument 0 is given and correct
             {
-               sender.sendMessage(ChatColor.YELLOW + CreeperBribe.logPrefix + "Nutze xxx um einen Creeper zu bestechen.");
+               sender.sendMessage(ChatColor.YELLOW + CreeperBribe.logPrefix + "Nutze " + CreeperBribe.bribeItem.toString() + " um einen Creeper zu bestechen.");
 
                return true;
             }

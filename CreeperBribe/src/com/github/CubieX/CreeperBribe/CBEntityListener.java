@@ -93,54 +93,57 @@ public class CBEntityListener implements Listener
 
                Player p = (Player) ent;
 
-               if(p.getItemInHand().getType() == Material.CAKE)
+               if((p.hasPermission("creeperbribe.bribe")) || (p.hasPermission("creeperbribe.admin")))
                {
-                  Random rand = new Random(System.currentTimeMillis());
-                  int bribe = rand.nextInt(RAND_UPPER_LIMIT); // will generate a value between 0 and upper limit - 1
-                  
-                  if(bribe == 0)
-                  {  // minimum of 1 is needed to make sure the chance is really 100% when using a configured bribeChance of 100%
-                     bribe = 1;
-                  }
-                  
-                  if(CreeperBribe.debug){CreeperBribe.log.info("bribeFactor: " + bribe + " % (>= " + CreeperBribe.bribeChance + " needed for Success.");}                  
-                  if(CreeperBribe.debug){p.sendMessage("bribeFactor: " + bribe + " % (>= " + CreeperBribe.bribeChance + " needed for Success.");}
-
-                  if(bribe >= (RAND_UPPER_LIMIT - CreeperBribe.bribeChance))
+                  if(p.getItemInHand().getType() == Material.CAKE)
                   {
-                     // bribe was successful. Creeper will no longer attack this player. (clone him, spawn a new one and block his targeting of players)
-                     Creeper original = (Creeper) event.getEntity();
-                     Creeper clone = p.getWorld().spawn(original.getLocation(), original.getClass());
-                     clone.setCustomName(ChatColor.RED + "♥");
-                     original.remove();
+                     Random rand = new Random(System.currentTimeMillis());
+                     int bribe = rand.nextInt(RAND_UPPER_LIMIT); // will generate a value between 0 and upper limit - 1
 
-                     if(null != clone)
+                     if(bribe == 0)
+                     {  // minimum of 1 is needed to make sure the chance is really 100% when using a configured bribeChance of 100%
+                        bribe = 1;
+                     }
+
+                     if(CreeperBribe.debug){CreeperBribe.log.info("bribeFactor: " + bribe + " % (>= " + CreeperBribe.bribeChance + " needed for Success.");}                  
+                     if(CreeperBribe.debug){p.sendMessage("bribeFactor: " + bribe + " % (>= " + CreeperBribe.bribeChance + " needed for Success.");}
+
+                     if(bribe >= (RAND_UPPER_LIMIT - CreeperBribe.bribeChance))
                      {
-                        clone.setTarget(null);
-                        event.setCancelled(true);
+                        // bribe was successful. Creeper will no longer attack this player. (clone him, spawn a new one and block his targeting of players)
+                        Creeper original = (Creeper) event.getEntity();
+                        Creeper clone = p.getWorld().spawn(original.getLocation(), original.getClass());
+                        clone.setCustomName(ChatColor.RED + "♥");
+                        original.remove();
 
-                        // consume the bribe item
-                        if(p.getItemInHand().getAmount() > 1)
+                        if(null != clone)
                         {
-                           p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
-                           p.updateInventory();
+                           clone.setTarget(null);
+                           event.setCancelled(true);
+
+                           // consume the bribe item
+                           if(p.getItemInHand().getAmount() > 1)
+                           {
+                              p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+                              p.updateInventory();
+                           }
+                           else
+                           {
+                              p.setItemInHand(null);
+                              p.updateInventory();
+                           }
+
+                           // TODO so machen, dass Ceeper "Wissen" von wem sie bestochen wurden. 
+                           // Sie sollen dann nur diese(n) Spieler nicht angreifen.
+                           // bzw. nicht explodieren, wenn neben anderen Spielern auch dieser im Explosionsradius ist.
+
+                           // remember that this creeper has been bribed and is now neutralized
+                           neutralizedCreepers.add(clone.getUniqueId().toString());
+
+                           if(CreeperBribe.debug){CreeperBribe.log.info("Creeper " + clone.getUniqueId().toString() + "has been bribed and is now friendly.");}
+
+                           p.sendMessage(ChatColor.GREEN + "Du hast diesen Creeper bestochen. Er ist nun friedlich!");
                         }
-                        else
-                        {
-                           p.setItemInHand(null);
-                           p.updateInventory();
-                        }
-
-                        // TODO so machen, dass Ceeper "Wissen" von wem sie bestochen wurden. 
-                        // Sie sollen dann nur diese(n) Spieler nicht angreifen.
-                        // bzw. nicht explodieren, wenn neben anderen Spielern auch dieser im Explosionsradius ist.
-
-                        // remember that this creeper has been bribed and is now neutralized
-                        neutralizedCreepers.add(clone.getUniqueId().toString());
-
-                        if(CreeperBribe.debug){CreeperBribe.log.info("Creeper " + clone.getUniqueId().toString() + "has been bribed and is now friendly.");}
-
-                        p.sendMessage(ChatColor.GREEN + "Du hast diesen Creeper bestochen. Er ist nun friedlich!");
                      }
                   }
                }

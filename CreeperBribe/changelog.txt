@@ -1,5 +1,8 @@
 Changelog for CreeperBribe by CubieX
 ------------------------------------
 
+V1.0.1
+- fixed permissions and version
+
 V.1.0.0
 - Initial version
