@@ -1,6 +1,11 @@
 Changelog for CreeperBribe by CubieX
 ------------------------------------
 
+V1.1.0
+- added briber safeguard functionality. Players near the briber will be safe.
+- added reactivation of bribed creeper aggro when creeper is hit by a player
+- added additional effects for players in an angry creepers explosion (nausea and blindness)
+
 V1.0.1
 - fixed permissions and version
 

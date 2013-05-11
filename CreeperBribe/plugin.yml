@@ -2,7 +2,7 @@ name: CreeperBribe
 main: com.github.CubieX.CreeperBribe.CreeperBribe
 author: CubieX
 softdepend: [PermissionsEx, zPermissions, bPermissions, PermissionsBukkit]
-version: 1.0.1
+version: 1.1.0
 description: Grants a chance to bribe a creeper to not explode and become neutral
 
 commands:

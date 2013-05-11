@@ -21,6 +21,9 @@ public class CreeperBribe extends JavaPlugin
    static boolean debug = false;
    static int bribeChance = 50;                 // chance to bribe a creeper in percent
    static Material bribeItem = Material.CAKE;   // Item to bribe a creeper with
+   static int angryExplosionRadius = 5;         // explosion radius of an angry creeper in meters (blocks)
+   static int nauseaDuration = 20;              // duration of nausea (confusion) from an angry creepers explosion (seconds)
+   static int blindnessDuration = 15;           // duration of blindness from an angry creepers explosion (seconds)
 
    //*************************************************
    static String usedConfigVersion = "1"; // Update this every time the config file version changes, so the plugin knows, if there is a suiting config present
@@ -96,6 +99,7 @@ public class CreeperBribe extends JavaPlugin
    public void readConfigValues()
    {
       boolean exceed = false;
+      boolean invalid = false;
 
       debug = cHandler.getConfig().getBoolean("debug");
 
@@ -107,10 +111,31 @@ public class CreeperBribe extends JavaPlugin
       {
          bribeItem = Material.getMaterial(cHandler.getConfig().getString("bribeItem"));
       }
+      else
+      {
+         invalid = true;
+      }
+      
+      angryExplosionRadius = cHandler.getConfig().getInt("angryExplosionRadius");
+      if(angryExplosionRadius > 10) {angryExplosionRadius = 10; exceed = true;}
+      if(angryExplosionRadius < 3) {angryExplosionRadius = 3; exceed = true;}
+      
+      nauseaDuration = cHandler.getConfig().getInt("nauseaDuration");
+      if(nauseaDuration > 60) {nauseaDuration = 60; exceed = true;}
+      if(nauseaDuration < 0) {nauseaDuration = 0; exceed = true;}
+      
+      blindnessDuration = cHandler.getConfig().getInt("blindnessDuration");
+      if(blindnessDuration > 60) {blindnessDuration = 60; exceed = true;}
+      if(blindnessDuration < 0) {blindnessDuration = 0; exceed = true;}
 
       if(exceed)
       {
          log.warning("One or more config values are exceeding their allowed range. Please check your config file!");
+      }
+      
+      if(invalid)
+      {
+         log.warning("One or more config values are invalid. Please check your config file!");
       }
    }
 

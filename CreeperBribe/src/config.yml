@@ -8,3 +8,10 @@ debug: false
 bribeChance: 50
 # Item to bribe a creeper (use Minecraft item names and ONLY items). Defaults to CAKE.
 bribeItem: CAKE
+# Explosion radius of an angry creeper. (A bribed creeper that gets hit gets really angry)
+# MC default is 3. (3-10)
+angyExplosionRadius: 5
+# Duration of nausea caused by a angry creepers explosion in seconds (0-60)
+nauseaDuration: 20
+# Duration of blindness caused by a angry creepers explosion in seconds (0-60)
+blindnessDuration: 15
