@@ -1,0 +1,10 @@
+# Do NOT change the config version!
+config_version: 1
+# Set locale for user dialog messages
+language: de
+# Enable debug output
+debug: false
+# The chance to bribe a creeper in percent (0-100)
+bribeChance: 50
+# Item to bribe a creeper (use Minecraft item names and ONLY items). Defaults to CAKE.
+bribeItem: CAKE

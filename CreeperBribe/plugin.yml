@@ -1,0 +1,20 @@
+name: CreeperBribe
+main: com.github.CubieX.CreeperBribe.CreeperBribe
+author: CubieX
+softdepend: [PermissionsEx, zPermissions, bPermissions, PermissionsBukkit]
+version: 0.0.1
+description: Grants a chance to bribe a creeper to not explode and become neutral
+
+commands:
+    cbribe:
+      description: Using Blessed
+      aliases: cb
+      usage: /cbribe version | reload | help
+
+permissions:
+    creeperbribe.bribe:
+        description: Grants ability to bribe a creeper
+        default: op
+    creeperbribe.admin:
+        description: Allows use of all commands and effects
+        default: op
