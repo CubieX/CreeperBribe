@@ -1,6 +1,9 @@
 Changelog for CreeperBribe by CubieX
 ------------------------------------
 
+V1.2.0
+- added framework for Field of View detection when bribing (not yet in effect)
+
 V1.1.0
 - added briber safeguard functionality. Players near the briber will be safe.
 - added reactivation of bribed creeper aggro when creeper is hit by a player

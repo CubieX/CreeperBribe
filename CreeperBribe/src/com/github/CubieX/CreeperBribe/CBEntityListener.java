@@ -66,7 +66,6 @@ public class CBEntityListener implements Listener
                (event.getTarget() instanceof Player))
          {
             Player targetedPlayer = (Player) event.getTarget();
-            if(CreeperBribe.debug){Bukkit.getServer().broadcastMessage("Target: " + targetedPlayer.getName());}
 
             // check if the creepers briber is the target, or if the briber is in the direct vicinity of the targeted player (= within explosion radius)
             if((targetedPlayer.getName().equals(neutralizedCreepers.get(event.getEntity().getUniqueId().toString()))) ||
@@ -111,7 +110,7 @@ public class CBEntityListener implements Listener
                else
                { // this creeper has not been bribed until now or is angry
                   if(angryCreepers.contains(event.getEntity().getUniqueId().toString()))
-                  { // he is angry, so apply special effects
+                  { // he is angry, so apply special effects fefore explosion goes off
                      event.setRadius(CreeperBribe.angryExplosionRadius);
 
                      if(CreeperBribe.nauseaDuration > 0)
@@ -127,11 +126,16 @@ public class CBEntityListener implements Listener
                      }
                   }
                   else
-                  { // he has never been bribed
+                  { // he has never been bribed                     
                      if((pNearPrimingCreeper.hasPermission("creeperbribe.bribe")) || (pNearPrimingCreeper.hasPermission("creeperbribe.admin")))
                      {
                         if(pNearPrimingCreeper.getItemInHand().getType() == Material.CAKE)
                         {
+                           // TODO check fails for certain YAW values of the player. Fix that!
+                           /*if(CreeperBribe.getEntitiesInCone(event.getEntity(), pNearPrimingCreeper.getLocation(), (int)(2 * event.getRadius()), 120)) // radius must be > 1
+                           { // player sees the creeper in front of him
+                              if(CreeperBribe.debug){pNearPrimingCreeper.sendMessage("Creeper gesichtet der dich angreift. Versuche Bestechung...");}
+                            */
                            Random rand = new Random(System.currentTimeMillis());
                            int bribe = rand.nextInt(RAND_UPPER_LIMIT); // will generate a value between 0 and upper limit - 1
 
@@ -140,15 +144,15 @@ public class CBEntityListener implements Listener
                               bribe = 1;
                            }
 
-                           if(CreeperBribe.debug){CreeperBribe.log.info("bribeFactor: " + bribe + " % (>= " + CreeperBribe.bribeChance + " needed for Success.");}                  
-                           if(CreeperBribe.debug){pNearPrimingCreeper.sendMessage("bribeFactor: " + bribe + " % (>= " + CreeperBribe.bribeChance + " needed for Success.");}
+                           if(CreeperBribe.debug){CreeperBribe.log.info("bribeFactor: " + bribe + " % ( >= " + CreeperBribe.bribeChance + " ) needed for Success.");}                  
+                           if(CreeperBribe.debug){pNearPrimingCreeper.sendMessage(ChatColor.WHITE + "bribeFactor: " + ChatColor.GREEN + bribe + ChatColor.WHITE + " % ( >= " + CreeperBribe.bribeChance + " ) needed for Success.");}
 
                            if(bribe >= (RAND_UPPER_LIMIT - CreeperBribe.bribeChance))
                            {
                               // bribe was successful. Creeper will no longer attack this player. (clone him, spawn a new one and block his targeting of players)
                               Creeper original = (Creeper) event.getEntity();
                               Creeper clone = pNearPrimingCreeper.getWorld().spawn(original.getLocation(), original.getClass());
-                              clone.setCustomName(ChatColor.RED + "♥");
+                              clone.setCustomName(ChatColor.RED + "♥ ♥ ♥");
                               original.remove();
 
                               if(null != clone)
@@ -168,20 +172,21 @@ public class CBEntityListener implements Listener
                                     pNearPrimingCreeper.updateInventory();
                                  }
 
-                                 // TODO so machen, dass Ceeper "Wissen" von wem sie bestochen wurden. 
-                                 // Sie sollen dann nur diese(n) Spieler nicht angreifen.
-                                 // bzw. nicht explodieren, wenn neben anderen Spielern auch dieser im Explosionsradius ist.
-
                                  // remember that this creeper has been bribed and is now neutralized
                                  neutralizedCreepers.put(clone.getUniqueId().toString(), pNearPrimingCreeper.getName()); // the creeper is the key, because a creeper can only be bribed by one player
 
-                                 if(CreeperBribe.debug){CreeperBribe.log.info("Creeper " + clone.getUniqueId().toString() + "has been bribed and is now friendly.");}
+                                 if(CreeperBribe.debug){CreeperBribe.log.info("Creeper " + clone.getUniqueId().toString() + " has been bribed and is now friendly.");}
 
                                  pNearPrimingCreeper.sendMessage(ChatColor.GREEN + "Du hast diesen Creeper bestochen. Er ist nun friedlich!");
                               }
                            }
+                           /*}
+                           else
+                           {
+                              if(CreeperBribe.debug){pNearPrimingCreeper.sendMessage("Du hast den Creeper nicht kommen sehen!");}
+                           }*/
                         }
-                     }
+                     }                    
                   }
                }
             }
@@ -199,7 +204,7 @@ public class CBEntityListener implements Listener
          // delete the bribed creeper that has been it from the list, to reactivate his killer instincts
          neutralizedCreepers.remove(event.getEntity().getUniqueId().toString());
          angryCreepers.add(event.getEntity().getUniqueId().toString()); // creeper is now angry!
-         
+
          Player damager = (Player) event.getDamager();
          damager.sendMessage(ChatColor.GOLD + "Du hast den Creeper wuetend gemacht!");
       }
