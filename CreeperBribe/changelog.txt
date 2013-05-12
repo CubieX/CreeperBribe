@@ -1,6 +1,9 @@
 Changelog for CreeperBribe by CubieX
 ------------------------------------
 
+V1.2.1
+- fixed logPrefix
+
 V1.2.0
 - added framework for Field of View detection when bribing (not yet in effect)
 

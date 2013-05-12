@@ -15,7 +15,7 @@ import sun.io.Converters;
 public class CreeperBribe extends JavaPlugin
 {
    public static final Logger log = Bukkit.getServer().getLogger();
-   static final String logPrefix = "[Blessed] "; // Prefix to go in front of all log entries
+   static final String logPrefix = "[CreeperBribe] "; // Prefix to go in front of all log entries
 
    private CreeperBribe plugin = null;
    private CBCommandHandler comHandler = null;
