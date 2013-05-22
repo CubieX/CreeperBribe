@@ -1,6 +1,9 @@
 Changelog for CreeperBribe by CubieX
 ------------------------------------
 
+V1.2.2
+- fixed typo in config parameter
+
 V1.2.1
 - fixed logPrefix
 
